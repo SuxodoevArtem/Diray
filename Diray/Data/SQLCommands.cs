@@ -7,7 +7,7 @@ namespace Diray.Data
 {
     class SQLCommands
     {
-        //C:\Програмирование\Проекты\Демо\MVVM1\MVVM1\DB
+        //
         private readonly IDbConnectionProvider _dbConnectionProvider;
 
         public SQLCommands(IDbConnectionProvider dbConnectionProvider)
