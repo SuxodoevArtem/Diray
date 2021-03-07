@@ -1,4 +1,5 @@
 ﻿using Diray.Data;
+using Diray.Model;
 using Diray.Servise;
 using System;
 using System.Collections.Generic;
@@ -14,10 +15,12 @@ namespace Diray.ViewModels
     {
 
         readonly ParsWeather weather = new ParsWeather();
+        readonly Сalendar _сalendar;
 
         private string _temperature = "";
         private string _icon = "";
-        string _currentDate = DateTime.Now.ToString("yyyy MMMM");
+        private string _currentDate = DateTime.Now.ToString("yyyy MMMM");
+        private List<Day> _days = new List<Day>();
 
         public MainWindowViewModel()
         {
@@ -29,7 +32,8 @@ namespace Diray.ViewModels
             SQLCommands datasetInitializer = new SQLCommands(connectionProvider);
             datasetInitializer.InitSchema();
 
-            var x = new Сalendar(DateTime.Parse(_currentDate));
+            _сalendar = new Сalendar(DateTime.Parse(_currentDate));
+
         }
 
         #region Weather
@@ -53,7 +57,6 @@ namespace Diray.ViewModels
         #endregion
 
         #region Date
-
         public string CurrentDate
         {
             get => _currentDate;
@@ -89,6 +92,8 @@ namespace Diray.ViewModels
                 {
                     CurrentDate = DateTime.Parse(_currentDate).AddMonths(1).ToString("yyyy MMMM");
                     OnPropertyChanged("CurrentDate");
+                    _сalendar.AddMonth(DateTime.Parse(_currentDate));
+
                 }));
             }
         }
@@ -101,10 +106,17 @@ namespace Diray.ViewModels
                 {
                     CurrentDate = DateTime.Parse(_currentDate).AddMonths(-1).ToString("yyyy MMMM");
                     OnPropertyChanged("CurrentDate");
+                    _сalendar.AddMonth(DateTime.Parse(_currentDate));
+
                 }));
             }
         }
         #endregion
+
+        public void InitNotes()
+        {
+
+        }
 
     }
 }
