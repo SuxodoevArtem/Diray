@@ -7,9 +7,9 @@ namespace Diray.Model
 {
     class Day : ViewModel
     {
-        private DateTime date;
-        private List<Note> listNotes = new List<Note>();
-        private int dayId;
+        public DateTime date;
+        public List<Note> listNotes = new List<Note>();
+        public int dayId;
         public DateTime Date
         {
             get => date;

@@ -10,9 +10,12 @@ namespace Diray.Model
     {
         private string title;
         private string content;
+        private int id;
 
-        public Note( string title, string content)
+        public Note( int id, string title, string content)
         {
+            this.id = id;
+
             if (string.IsNullOrWhiteSpace(title))
                 throw new ArgumentException("Value cannot be null or whitespace.", nameof(title));
             this.title = title;
