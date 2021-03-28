@@ -10,7 +10,7 @@ namespace Diray.Model
     {
         private string title;
         private string content;
-        private int id;
+        public int id;
 
         public Note( int id, string title, string content)
         {

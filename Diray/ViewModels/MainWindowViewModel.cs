@@ -140,17 +140,30 @@ namespace Diray.ViewModels
 
         public void InitDays()
         {
-
-            datasetInitializer.GetDayOfMonth(_сalendar.currentMonth);
-
+            var data = datasetInitializer.GetDayOfMonth(_сalendar.currentMonth);
             
             Days.Clear();
             foreach (var n in _days)
             {
+                Days.Add(new Day { date = n});
+                foreach (var j in data)
+                {
+                    if (n.ToString("yyyy-MM-dd") == j.Date)
+                    {
+                        var notes = datasetInitializer.GetNoteOfDay(j.Id);
+                        List<Note> listnotes = new List<Note>();
 
-                Days.Add(new Day { date = n });
+                        Days.RemoveAt(Days.Count - 1);
+                        notes.ForEach(item => listnotes.Add(new Note(item.Id, item.Title, item.Content)));
+                        Days.Add(new Day { 
+                            date = n,
+                            dayId = j.Id,
+                            ListNotes = listnotes
+                        });
+                    }
+
+                }
             }
-            
 
         }
 
