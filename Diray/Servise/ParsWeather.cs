@@ -28,7 +28,7 @@ namespace Diray.Servise
             var jobject = JObject.Parse(responseBody);
 
             temp = ((int)Double.Parse(jobject["main"].SelectToken("temp").ToString()) - 273).ToString();
-            iconUrl = Directory.GetCurrentDirectory() + @$"\\Icons\{jobject["weather"][0].SelectToken("icon")}.png";
+            iconUrl = @"C:\Програмирование\Проекты\Diray\Diray" + @$"\Icons\{jobject["weather"][0].SelectToken("icon")}.png";
         }
 
     }

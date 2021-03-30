@@ -4,6 +4,7 @@
         xmlns:vm="clr-namespace:Diray.ViewModels"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+
         xmlns:local="clr-namespace:Diray"
         mc:Ignorable="d"
         Title="MainWindow" Height="680px" Width="1060px">
@@ -17,7 +18,7 @@
         </Grid.ColumnDefinitions>
         <StackPanel Grid.Column="0">
             <WrapPanel Height="50" Background="#f5f6f7" Width="auto">
-                <WrapPanel Height="50" Width="600px">
+                <WrapPanel Height="50" Width="640px">
 
                     <Button  Width="25" Height="25" Margin="15,13,0,0" Command="{Binding LastMonthCommand}">
                         <Button.Template>
@@ -41,8 +42,14 @@
                     </Button>
                     <TextBlock Margin="12,13,0,0" VerticalAlignment="Center" FontSize="18" Text="{Binding CurrentDate}"></TextBlock>
                 </WrapPanel>
-                <WrapPanel Height="50" Width="100px">
-                    <TextBlock Width="50" Height="50" FontSize="25" Text="{Binding Temperature}"></TextBlock>
+                <WrapPanel Height="50" Width="77px" >
+                    <WrapPanel.Background>
+                        <LinearGradientBrush>
+                            <GradientStop Color="#f5f6f7" Offset="0.2"></GradientStop>
+                            <GradientStop Color="#b4dfde" Offset="0.9"></GradientStop>
+                        </LinearGradientBrush>
+                    </WrapPanel.Background>
+                    <TextBlock  Padding="2" Width="20" Height="50" FontSize="30" Text="{Binding Temperature}"></TextBlock>
                     <Image Width="50" Height="50" Source="{Binding Icon}"></Image>
                 </WrapPanel>
             </WrapPanel>
@@ -55,7 +62,26 @@
                 <ListBox BorderThickness="0" Margin="38,0,30,0" Foreground="Silver" FontSize="20">Сб</ListBox>
                 <ListBox BorderThickness="0" Margin="38,0,0,0" Foreground="Silver" FontSize="20">Вс</ListBox>
             </WrapPanel>
-            <ListBox BorderThickness="0" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Height="570" Width="720" ItemsSource="{Binding Days}">
+            <ListBox BorderThickness="0" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Height="570" Width="720" ItemsSource="{Binding Days}" SelectedItem="{Binding SelectedDay}">
+                <ListBox.ItemContainerStyle>
+                    <Style TargetType="{x:Type ListBoxItem}">
+                        <!--<Style.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="BorderThickness" Value="0"/>
+                                <Setter Property="Cursor" Value="Hand" />
+                                <Setter Property="Background" Value="Red"></Setter>
+
+                            </Trigger>
+                        </Style.Triggers>-->
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="ListBoxItem">
+                                    <ContentPresenter/>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </ListBox.ItemContainerStyle>
                 <ListBox.ItemsPanel>
                     <ItemsPanelTemplate>
                         <WrapPanel Margin="0" Width="720" />
@@ -64,27 +90,40 @@
                 <ListBox.ItemTemplate>
 
                     <DataTemplate >
-                        <StackPanel  Height="108" Width="92">
+                        <StackPanel  Height="108" Width="102">
                             <Border BorderThickness="1" Background="#f5f5f5" CornerRadius="50" Width="36" Height="35">
                                 <TextBlock HorizontalAlignment="Center"  VerticalAlignment="Center"  FontSize="12" Text="{Binding Path=Date.Day}" />
                             </Border>
-                            <ListBox ItemsSource="{Binding Path=ListNotes}" BorderThickness="0">
+                            <ListBox ItemsSource="{Binding Path=ListNotes}" BorderThickness="0"  ScrollViewer.HorizontalScrollBarVisibility="Disabled" >
+                                <ListBox.ItemContainerStyle>
+                                    <Style TargetType="{x:Type ListBoxItem}">
+                                        <Setter Property="Template">
+                                            <Setter.Value>
+                                                <ControlTemplate TargetType="ListBoxItem">
+                                                    <ContentPresenter/>
+                                                </ControlTemplate>
+                                            </Setter.Value>
+                                        </Setter>
+                                    </Style>
+                                </ListBox.ItemContainerStyle>
                                 <ListBox.ItemTemplate>
                                     <DataTemplate>
-                                        <StackPanel>
-                                            <Label VerticalAlignment="Center"  FontSize="10px" HorizontalAlignment="Center" Content="{Binding Path=Title}"></Label>
+                                        <StackPanel Margin="1" >
+                                            <TextBlock Background="#278e52" FontSize="13" Height="18" Width="80"  Foreground="White" TextAlignment="Center" Text="{Binding Path=Title}"></TextBlock>
                                         </StackPanel>
                                     </DataTemplate>
                                 </ListBox.ItemTemplate>
                             </ListBox>
                         </StackPanel>
                     </DataTemplate>
+                    
                 </ListBox.ItemTemplate>
             </ListBox>
             
         </StackPanel>
+        
         <StackPanel Grid.Column="1" Height="auto" Background="#2a3e4c">
-
+            <TextBlock Foreground="White" Margin="15" FontSize="32"  Text="{Binding SelectedDay.DateString}"></TextBlock>
         </StackPanel>
     </Grid>
 </Window>

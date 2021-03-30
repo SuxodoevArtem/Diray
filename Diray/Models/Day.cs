@@ -10,6 +10,11 @@ namespace Diray.Model
         public DateTime date;
         public List<Note> listNotes = new List<Note>();
         public int dayId;
+        public string DateString
+        {
+            get => date.ToString("dd MMMM yyyy");
+        }
+
         public DateTime Date
         {
             get => date;

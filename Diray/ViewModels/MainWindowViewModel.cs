@@ -88,6 +88,8 @@ namespace Diray.ViewModels
             }
         }
 
+
+
         #endregion
 
         public async Task Wheather()
