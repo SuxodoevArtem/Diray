@@ -25,6 +25,11 @@ namespace Diray.ViewModels
         private string _currentDate = DateTime.Now.ToString("yyyy MMMM");
         private List<DateTime> _days = new List<DateTime>();
         private Day _selectedDay;
+        private Note _selectedNote;
+        private Day _currentDay;
+        private string _title = "Введите заголовок";
+        private string _content = "Введите заметку";
+
         public ObservableCollection<Day> Days { get; set; }
         SQLCommands datasetInitializer;
 
@@ -83,12 +88,42 @@ namespace Diray.ViewModels
             get => _selectedDay;
             set
             {
+                Title = "Введите заголовок";
+                Content = "Введите заметку";
                 _selectedDay = value;
                 OnPropertyChanged("SelectedDay");
             }
         }
 
+        public Note SelectedNote
+        {
+            get => _selectedNote;
+            set
+            {
+                _selectedNote = value;
+                OnPropertyChanged("SelectedNote");
+            }
+        }
 
+        public string Title
+        {
+            get => _title;
+            set
+            {
+                _title = value;
+                OnPropertyChanged("Title");
+            }
+        }
+
+        public string Content
+        {
+            get => _content;
+            set
+            {
+                _content = value;
+                OnPropertyChanged("Content");
+            }
+        }
 
         #endregion
 
@@ -106,6 +141,9 @@ namespace Diray.ViewModels
 
         Command nextMonthCommand;
         Command lastMonthCommand;
+        Command updateCommand;
+        Command addCommand;
+        Command deleteCommand;
 
         public Command NextMonthCommand
         {
@@ -138,10 +176,65 @@ namespace Diray.ViewModels
                 }));
             }
         }
+
+        public Command AddCommand
+        {
+            get
+            {
+                return addCommand ?? (addCommand = new Command(obj =>
+                {
+                    DateTime selected = SelectedDay.Date;
+                    datasetInitializer.AddNote(SelectedDay.Date.ToString("yyyy-MM-dd"), Title, Content);
+
+                    InitDays();
+
+                    Title = "Введите заголовок";
+                    Content = "Введите заметку";
+
+                    SelectedDay = Days.Where(item => item.DateString == selected.ToString("dd MMMM yyyy")).First();
+
+                }));
+            }
+        }
+        public Command UpdateCommand
+        {
+            get
+            {
+                return updateCommand ?? (updateCommand = new Command(obj =>
+                {
+                    if (SelectedNote != null)
+                    {
+                        datasetInitializer.UpdateNote(SelectedNote.id, SelectedNote.Title, SelectedNote.Content);
+                    }
+                
+                }));
+            }
+        }
+
+        public Command DeleteCommand
+        {
+            get
+            {
+                return deleteCommand ?? (deleteCommand = new Command(obj =>
+                {
+                    DateTime selected = SelectedDay.Date;
+                    if (SelectedNote != null)
+                    {
+                        datasetInitializer.DeletNote(SelectedDay.DayId, SelectedNote.id, SelectedDay.listNotes.Count());
+                    }
+
+                    InitDays();
+
+                    SelectedDay = Days.Where(item => item.DateString == selected.ToString("dd MMMM yyyy")).First();
+                }));
+            }
+        }
+
         #endregion
 
         public void InitDays()
         {
+           
             var data = datasetInitializer.GetDayOfMonth(_сalendar.currentMonth);
             
             Days.Clear();
@@ -153,10 +246,10 @@ namespace Diray.ViewModels
                     if (n.ToString("yyyy-MM-dd") == j.Date)
                     {
                         var notes = datasetInitializer.GetNoteOfDay(j.Id);
-                        List<Note> listnotes = new List<Note>();
+                        ObservableCollection<Note> listnotes = new ObservableCollection<Note>();
 
                         Days.RemoveAt(Days.Count - 1);
-                        notes.ForEach(item => listnotes.Add(new Note(item.Id, item.Title, item.Content)));
+                        notes.ForEach(item => listnotes.Add(new Note(item.Id, item.Title, item.Content, UpdateCommand, DeleteCommand)));
                         Days.Add(new Day { 
                             date = n,
                             dayId = j.Id,
@@ -167,7 +260,14 @@ namespace Diray.ViewModels
                 }
             }
 
+            _currentDay = _currentDay ?? Days.Where(item => item.DateString == DateTime.Now.Date.ToString("dd MMMM yyyy")).First();
+            SelectedDay = _currentDay;
+
         }
 
+        public string FormatString(string str)
+        {
+            return str;
+        }
     }
 }

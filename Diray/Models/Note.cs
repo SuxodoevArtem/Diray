@@ -11,8 +11,10 @@ namespace Diray.Model
         private string title;
         private string content;
         public int id;
+        public Command UpdateCommand { get; set; }
+        public Command DeleteCommand { get; set; }
 
-        public Note( int id, string title, string content)
+        public Note( int id, string title, string content, Command updateCommand, Command deleteCommand)
         {
             this.id = id;
 
@@ -20,9 +22,10 @@ namespace Diray.Model
                 throw new ArgumentException("Value cannot be null or whitespace.", nameof(title));
             this.title = title;
 
-            if (string.IsNullOrWhiteSpace(content))
-                throw new ArgumentException("Value cannot be null or whitespace.", nameof(content));
             this.content = content;
+            UpdateCommand = updateCommand;
+            DeleteCommand = deleteCommand;
+
         }
 
         public string Title
@@ -34,6 +37,7 @@ namespace Diray.Model
                 OnPropertyChanged("Title");
             }
         }
+
         public string Content
         {
             get => content;
@@ -43,5 +47,6 @@ namespace Diray.Model
                 OnPropertyChanged("Content");
             }
         }
+
     }
 }

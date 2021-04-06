@@ -89,5 +89,55 @@ namespace Diray.Data
 
             return ListNotes;
         }
+
+        public void AddNote(string date, string title, string content)
+        {
+           var IdDay = connection.ExecuteScalar($@"
+                SELECT Id
+	                FROM Day
+		                WHERE Date = '{date}' ");
+
+            if (IdDay == null)
+            {
+                AddDay(date);
+                IdDay = connection.ExecuteScalar($@"SELECT MAX(id) FROM Day").ToString();
+            }
+              
+            connection.Execute($@"
+                INSERT INTO Note (idDay, Title, Content)
+                    VALUES ('{IdDay}','{title}','{content}')
+            ");
+        }
+
+        public void UpdateNote(int idNote, string title, string content)
+        {
+            connection.Execute($@"
+                UPDATE Note SET Title = '{title}', Content = '{content}' WHERE Id = '{idNote}'
+            ");
+        }
+
+        public void DeletNote(int idDay, int idNote,int countNotes)
+        {
+            if (countNotes != 0)
+            {
+                connection.Execute($@"
+                    DELETE FROM Note WHERE Id = '{idNote}'
+                ");
+            }
+  
+            if(countNotes <= 1)
+                DeleteDay(idDay);
+            
+        }
+
+        private void DeleteDay(int idDay)
+        {
+            connection.Execute($@" DELETE FROM Day WHERE Id = '{idDay}' ");
+        }
+
+        private void AddDay(string date)
+        {
+             connection.Execute($@" INSERT INTO Day (Date) VALUES ('{date}') ");
+        }
     }
 }

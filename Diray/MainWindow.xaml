@@ -20,7 +20,7 @@
             <WrapPanel Height="50" Background="#f5f6f7" Width="auto">
                 <WrapPanel Height="50" Width="640px">
 
-                    <Button  Width="25" Height="25" Margin="15,13,0,0" Command="{Binding LastMonthCommand}">
+                    <Button Cursor="Hand"  Width="25" Height="25" Margin="15,13,0,0" Command="{Binding LastMonthCommand}">
                         <Button.Template>
                             <ControlTemplate TargetType="Button">
                                 <Grid>
@@ -30,7 +30,7 @@
                             </ControlTemplate>
                         </Button.Template>
                     </Button>
-                    <Button  Width="25" Height="25" Margin="12,13,0,0" Command="{Binding NextMonthCommand}">
+                    <Button Cursor="Hand" Width="25" Height="25" Margin="12,13,0,0" Command="{Binding NextMonthCommand}">
                         <Button.Template>
                             <ControlTemplate TargetType="Button">
                                 <Grid>
@@ -49,8 +49,8 @@
                             <GradientStop Color="#b4dfde" Offset="0.9"></GradientStop>
                         </LinearGradientBrush>
                     </WrapPanel.Background>
-                    <TextBlock  Padding="2" Width="20" Height="50" FontSize="30" Text="{Binding Temperature}"></TextBlock>
-                    <Image Width="50" Height="50" Source="{Binding Icon}"></Image>
+                    <TextBlock  Padding="2" Width="28" Height="50" FontSize="30" Text="{Binding Temperature}"></TextBlock>
+                    <Image Width="45" Height="50" Source="{Binding Icon}"></Image>
                 </WrapPanel>
             </WrapPanel>
             <WrapPanel Height="30">
@@ -108,7 +108,7 @@
                                 </ListBox.ItemContainerStyle>
                                 <ListBox.ItemTemplate>
                                     <DataTemplate>
-                                        <StackPanel Margin="1" >
+                                        <StackPanel Margin="1">
                                             <TextBlock Background="#278e52" FontSize="13" Height="18" Width="80"  Foreground="White" TextAlignment="Center" Text="{Binding Path=Title}"></TextBlock>
                                         </StackPanel>
                                     </DataTemplate>
@@ -116,14 +116,53 @@
                             </ListBox>
                         </StackPanel>
                     </DataTemplate>
-                    
+
                 </ListBox.ItemTemplate>
             </ListBox>
-            
         </StackPanel>
         
         <StackPanel Grid.Column="1" Height="auto" Background="#2a3e4c">
             <TextBlock Foreground="White" Margin="15" FontSize="32"  Text="{Binding SelectedDay.DateString}"></TextBlock>
+
+
+            <TextBox Height="30" Margin="13"  BorderThickness="0,0,0,1" Background="#2a3e4c" BorderBrush="Silver" FontSize="16" Foreground="Silver" Text="{Binding Content}" Opacity="0.9"></TextBox>
+            
+            <WrapPanel Height="50" Margin="13,0,13,0">
+                <TextBox Height="26" Width="185" Background="#2a3e4c" BorderThickness="0,0,0,1" Foreground="Silver" BorderBrush="Silver"  FontSize="16"  Text="{Binding Title}"></TextBox>
+                <Button Margin="16,0,0,0" Content="Сохранить" Background="#3da9df" Width="100" Foreground="White" BorderThickness="0" Cursor="Hand" Command="{Binding AddCommand}" ></Button>
+            </WrapPanel>
+            
+            <ListBox Background="#2a3e4c" BorderThickness="0" ItemsSource="{Binding SelectedDay.ListNotes }" SelectedItem="{Binding SelectedNote}">
+                <ListBox.ItemContainerStyle>
+                    <Style TargetType="{x:Type ListBoxItem}">
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="ListBoxItem">
+                                    <ContentPresenter/>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </ListBox.ItemContainerStyle>
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel  Margin="10" Height="125" Width="300" Background="White" Opacity="1">
+                            <TextBox FontSize="14" Foreground="#494747" Height="18" BorderThickness="0" Text="{Binding Path=Title}"></TextBox>
+                            <TextBox Margin="5" Height="64" BorderThickness="0" TextWrapping="Wrap" Text="{Binding Path=Content}"></TextBox>
+                            <WrapPanel Width="280" >
+                                <Button Margin="218,0,0,0" BorderThickness="0" Background="#575dba" Height="28" Width="28" Cursor="Hand" Command="{Binding UpdateCommand}">
+                                    <Image Width="20" Height="20" Source="C:\Програмирование\Проекты\Diray\Diray\Icons\edit.png" />
+                                </Button>
+                                <Button Margin="5,0,0,0" BorderThickness="0" Background="#a71414" Height="28" Width="28" Cursor="Hand" Command="{Binding DeleteCommand}">
+                                    <Image Width="20" Height="20" Source="C:\Програмирование\Проекты\Diray\Diray\Icons\delete.png"/>
+                                </Button>
+                            </WrapPanel>
+                        </StackPanel>
+
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+            
         </StackPanel>
     </Grid>
 </Window>

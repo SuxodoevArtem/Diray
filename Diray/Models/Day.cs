@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Text;
 using Diray.ViewModels;
 
@@ -8,7 +9,7 @@ namespace Diray.Model
     class Day : ViewModel
     {
         public DateTime date;
-        public List<Note> listNotes = new List<Note>();
+        public ObservableCollection<Note> listNotes = new ObservableCollection<Note>();
         public int dayId;
         public string DateString
         {
@@ -35,7 +36,7 @@ namespace Diray.Model
             }
         }
 
-        public List<Note> ListNotes
+        public ObservableCollection<Note> ListNotes
         {
             get => listNotes;
             set
